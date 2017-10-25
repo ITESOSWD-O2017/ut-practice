@@ -5,34 +5,65 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Period;
 
+/**
+ *
+ */
 class Date {
-
+    /**
+     *
+     */
     private static final int VALID          = 0;
+    /**
+     *
+      */
     private static final int INVALID_DAY    = 1;
+    /**
+     *
+      */
     private static final int INVALID_MONTH  = 2;
+    /**
+     *
+      */
     private static final int INVALID_YEAR   = 3;
-
+    /**
+     *
+     */
     private String date;
 
-    public Date() {
+    /**
+     *
+     */
+    Date() {
 
     }
 
-    public Date(String date) {
-        setDate(date);
+    /**
+     *
+     * @param date6 date 6
+     */
+    Date(final String date6) {
+        setDate(date6);
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    /**
+     *
+     * @param date1 date 1
+     */
+    public void setDate(final String date1) {
+        this.date = date1;
     }
 
+    /**
+     *
+     * @return e
+     */
     protected String calculateAge() {
-        String dateArr[];
+        String[] dateArr;
         LocalDate birthDay;
         LocalDate today;
 
 
-        if(isCorrectFormat(date)) {
+        if (isCorrectFormat(date)) {
             dateArr = date.split("/");
         } else {
             return "Please enter a date with a valid format";
@@ -44,11 +75,11 @@ class Date {
                 Integer.parseInt(dateArr[2])
         );
 
-        if(validDate == INVALID_DAY){
+        if (validDate == INVALID_DAY) {
             return "Please enter a valid day";
-        } else if(validDate == INVALID_MONTH) {
+        } else if (validDate == INVALID_MONTH) {
             return "Please enter a valid month";
-        } else if(validDate == INVALID_YEAR) {
+        } else if (validDate == INVALID_YEAR) {
             return "Please enter a valid month";
         } else {
             birthDay = LocalDate.of(
@@ -63,32 +94,47 @@ class Date {
         }
 
         try {
-            return Period.between(birthDay, today).getYears() + " years, " +
-                    Period.between(birthDay, today).getMonths() + " months and " +
+            return Period.between(birthDay, today).getYears() + " years, "
+                    +
+                    Period.between(birthDay, today).getMonths() + " months and "
+                    +
                     Period.between(birthDay, today).getDays() + " days";
         } catch (Exception e) {
             return e.getMessage();
         }
     }
 
-    protected boolean isCorrectFormat(String date) {
+    /**
+     *
+     * @param dateX datex
+     * @return dateX
+     */
+    protected boolean isCorrectFormat(final String dateX) {
         // Use regex to validate
         String datePattern = "\\d{2}\\/\\d{2}\\/\\d{4}";
-        return date.matches(datePattern);
+        return dateX.matches(datePattern);
     }
-
-    protected int isValidDate(int day, int month, int year) {
-
+    /**
+     *
+     * @param day day
+     * @param month month
+     * @param year year
+     * @return VALID
+     */
+    protected int isValidDate(final int day, final int month, final int year) {
+/**
+ *
+ */
         try {
             LocalDate.of(year, month, day);
         } catch (DateTimeException e) {
-            if(e.getMessage().contains("DayOfMonth")) {
+            if (e.getMessage().contains("DayOfMonth")) {
                 return INVALID_DAY;
             } else
-            if(e.getMessage().contains("MonthOfYear")) {
+            if (e.getMessage().contains("MonthOfYear")) {
                 return INVALID_MONTH;
             } else
-            if(e.getMessage().contains("Year")) {
+            if (e.getMessage().contains("Year")) {
                 return INVALID_YEAR;
             }
         }
