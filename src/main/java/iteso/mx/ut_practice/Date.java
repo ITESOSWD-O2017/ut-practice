@@ -73,7 +73,7 @@ class Date {
 
     protected boolean isCorrectFormat(String date) {
         // Use regex to validate
-        String datePattern = "\\d{2}\\/\\d{2}\\/\\d{4}";
+        String datePattern = "\\d{2}/\\d{2}/\\d{4}";
         return date.matches(datePattern);
     }
 
