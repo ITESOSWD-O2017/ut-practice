@@ -91,6 +91,27 @@ public class TestDate {
         );
     }
 
+    /**
+     *
+     */
+    @Test
+    public void yearsBet() {
+        Assert.assertEquals(
+                "1 years, 0 months and 2 days",
+                dateCalculator.calculYB("25/10/2017","27/10/2018")
+        );
+    }
+
+    /**
+     *
+     */
+    @Test
+    public void yearsBetExample() {
+        Assert.assertEquals(
+                "41 years, 7 months and 26 days",
+                dateCalculator.calculYB("16/06/1996","11/02/2038")
+        );
+    }
 
 
 }

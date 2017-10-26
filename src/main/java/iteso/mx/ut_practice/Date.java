@@ -36,15 +36,6 @@ class Date {
     Date() {
 
     }
-
-    /**
-     *
-     * @param date1 El parametro de fecha
-     */
-    Date(final String date1) {
-        setDate(date);
-    }
-
     /**
      *
      * @param date2 El parametro de la fecha
@@ -112,7 +103,7 @@ class Date {
     protected boolean isCorrectFormat(final String date3) {
         // Use regex to validate.
         String datePattern = "\\d{2}\\/\\d{2}\\/\\d{4}";
-        return date.matches(datePattern);
+        return date3.matches(datePattern);
     }
 
     /**
@@ -138,6 +129,87 @@ class Date {
             }
         }
         return VALID;
+    }
+
+    /**
+     *
+     * @param dateini recibe fecha de inicio
+     * @param datefin recibe fecha final
+     * @return String la fecha calculada
+     */
+    protected String calculYB(final String dateini, final String datefin) {
+        String[] datearr;
+        String[] datearr1;
+        LocalDate fecha1;
+        LocalDate fecha2;
+
+
+
+
+        if (isCorrectFormat(dateini)) {
+            datearr = dateini.split("/");
+        } else {
+            return "Please enter a date with a valid format";
+        }
+
+        if (isCorrectFormat(datefin)) {
+            datearr1 = datefin.split("/");
+        } else {
+            return "Please enter a date with a valid format";
+        }
+        //Fecha1.
+        int validDate = isValidDate(
+                Integer.parseInt(datearr[0]),
+                Integer.parseInt(datearr[1]),
+                Integer.parseInt(datearr[2])
+        );
+
+        if (validDate == INVALID_DAY) {
+            return "Please enter a valid day";
+        } else if (validDate == INVALID_MONTH) {
+            return "Please enter a valid month";
+        } else if (validDate == INVALID_YEAR) {
+            return "Please enter a valid year";
+        } else {
+            fecha1 = LocalDate.of(
+                    Integer.parseInt(datearr[2]),
+                    Integer.parseInt(datearr[1]),
+                    Integer.parseInt(datearr[0]));
+        }
+
+        //Fecha2.
+        validDate = isValidDate(
+                Integer.parseInt(datearr1[0]),
+                Integer.parseInt(datearr1[1]),
+                Integer.parseInt(datearr1[2])
+        );
+
+        if (validDate == INVALID_DAY) {
+            return "Please enter a valid day";
+        } else if (validDate == INVALID_MONTH) {
+            return "Please enter a valid month";
+        } else if (validDate == INVALID_YEAR) {
+            return "Please enter a valid year";
+        } else {
+            fecha2 = LocalDate.of(
+                    Integer.parseInt(datearr1[2]),
+                    Integer.parseInt(datearr1[1]),
+                    Integer.parseInt(datearr1[0]));
+        }
+
+        if (Period.between(fecha1, fecha2).isNegative()) {
+            return "The second date is in the past";
+        }
+
+        try {
+            return Period.between(fecha1, fecha2).getYears() + " years, "
+                    + Period.between(fecha1, fecha2).getMonths()
+                    + " months and "
+                    + Period.between(fecha1, fecha2).getDays()
+                    + " days";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 
 }
