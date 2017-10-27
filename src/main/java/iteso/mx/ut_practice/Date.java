@@ -1,9 +1,9 @@
-
 package iteso.mx.ut_practice;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Period;
+
 /** Constructor of Date.*/
 class Date {
     /** Valid.*/
@@ -39,7 +39,6 @@ class Date {
         String[] dateArr;
         LocalDate birthDay;
         LocalDate today;
-
 
         if (isCorrectFormat(date)) {
             dateArr = date.split("/");
@@ -87,7 +86,7 @@ class Date {
     protected boolean isCorrectFormat(final String dates) {
         // Use regex to validate
         String datePattern = "\\d{2}\\/\\d{2}\\/\\d{4}";
-        return date.matches(datePattern);
+        return dates.matches(datePattern);
     }
     /** Validating date.
      * @param day day of month.
@@ -96,7 +95,6 @@ class Date {
      * @return end.
      * */
     protected int isValidDate(final int day, final int month, final int year) {
-
         try {
             LocalDate.of(year, month, day);
         } catch (DateTimeException e) {
@@ -112,5 +110,75 @@ class Date {
         }
         return VALID;
     }
+    /** Calculating age.
+     * @param bDate date when person was born.
+     * @param fDate future.
+     * @return end.
+     * */
+    protected String ageCalculation(final String bDate, final String fDate) {
+        String[] dateArr;
+        String[] dateArr2;
+        LocalDate birthDay;
+        LocalDate futureDay;
 
+        if (bDate == "" || fDate == "") {
+            return "Please enter a date";
+        }
+
+        if (bDate == fDate) {
+            return "Please enter different dates";
+        }
+
+        if (isCorrectFormat(bDate) && isCorrectFormat(fDate)) {
+            dateArr = bDate.split("/");
+            dateArr2 = fDate.split("/");
+        } else {
+            return "Please enter a date with a valid format";
+        }
+
+        int validDate = isValidDate(
+                Integer.parseInt(dateArr[0]),
+                Integer.parseInt(dateArr[1]),
+                Integer.parseInt(dateArr[2])
+        );
+
+        int validDate2 = isValidDate(
+                Integer.parseInt(dateArr2[0]),
+                Integer.parseInt(dateArr2[1]),
+                Integer.parseInt(dateArr2[2])
+        );
+
+        if (validDate == INVALID_DAY || validDate2 == INVALID_DAY) {
+            return "Please enter a valid day";
+        } else if (validDate == INVALID_MONTH || validDate2 == INVALID_MONTH) {
+            return "Please enter a valid month";
+        } else if (validDate == INVALID_YEAR || validDate2 == INVALID_YEAR) {
+            return "Please enter a valid month";
+        } else {
+           birthDay = LocalDate.of(
+                    Integer.parseInt(dateArr[2]),
+                    Integer.parseInt(dateArr[1]),
+                    Integer.parseInt(dateArr[0]));
+
+           futureDay = LocalDate.of(
+                   Integer.parseInt(dateArr2[2]),
+                   Integer.parseInt(dateArr2[1]),
+                   Integer.parseInt(dateArr2[0]));
+
+        }
+
+        if (Period.between(birthDay, futureDay).isNegative()) {
+            return "Please enter a past date";
+        }
+
+        try {
+            return Period.between(birthDay, futureDay).getYears() + " years, "
+                    + Period.between(birthDay, futureDay).getMonths()
+                    + " months and "
+                    + Period.between(birthDay, futureDay).getDays() + " days";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+
+    }
 }

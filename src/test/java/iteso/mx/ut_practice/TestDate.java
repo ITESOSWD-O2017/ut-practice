@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.regex.Pattern;
+
 public class TestDate {
 
     Date dateCalculator;
@@ -17,7 +19,7 @@ public class TestDate {
     public void validDate() {
         dateCalculator.setDate("02/10/1996");
         Assert.assertEquals(
-               "21 years, 0 months and 23 days",
+               "21 years, 0 months and 24 days",
                 dateCalculator.calculateAge()
         );
     }
@@ -64,6 +66,22 @@ public class TestDate {
         Assert.assertEquals(
              "Please enter a past date",
               dateCalculator.calculateAge()
+        );
+    }
+
+    @Test
+    public void hasValue(){
+        Assert.assertEquals(
+                "Please enter a date",
+                dateCalculator.ageCalculation("","22/12/2025")
+        );
+    }
+
+    @Test
+    public void isNotSameDate(){
+        Assert.assertEquals(
+                "Please enter different dates",
+                dateCalculator.ageCalculation("28/05/1994","28/05/1994")
         );
     }
 
