@@ -41,6 +41,7 @@ class Date {
      * @param date1 fecha.
      */
     Date(final String date1) {
+
         setDate(date1);
     }
 
@@ -49,6 +50,7 @@ class Date {
      * @param date1 fecha.
      */
     public void setDate(final String date1) {
+
         this.date = date;
     }
 
@@ -58,7 +60,7 @@ class Date {
      */
     protected String calculateAge() {
         String[] dateArr;
-        LocalDate birthDay;
+        LocalDate date1;
         LocalDate today;
 
 
@@ -81,23 +83,23 @@ class Date {
         } else if (validDate == INVALID_YEAR) {
             return "Please enter a valid month";
         } else {
-            birthDay = LocalDate.of(
+            date1 = LocalDate.of(
                     Integer.parseInt(dateArr[2]),
                     Integer.parseInt(dateArr[1]),
                     Integer.parseInt(dateArr[0]));
             today = LocalDate.now();
         }
 
-        if (Period.between(birthDay, today).isNegative()) {
+        if (Period.between(date1, today).isNegative()) {
             return "Please enter a past date";
         }
 
         try {
-            return Period.between(birthDay, today).getYears() + " years, "
+            return Period.between(date1, today).getYears() + " years, "
                     +
-                    Period.between(birthDay, today).getMonths() + " months and "
+                    Period.between(date1, today).getMonths() + " months and "
                     +
-                    Period.between(birthDay, today).getDays() + " days";
+                    Period.between(date1, today).getDays() + " days";
         } catch (Exception e) {
             /**
              *Exception e.
@@ -140,6 +142,78 @@ class Date {
             }
         }
         return VALID;
+    }
+
+    /**
+     * @param iniDate initial date.
+     * @param finDate final date.
+     * @return return.
+     */
+    protected String ageCalculator(final String iniDate, final String finDate) {
+        String[] dateArr1;
+        String[] dateArr2;
+        LocalDate date1;
+        LocalDate date2;
+
+        if (isCorrectFormat(iniDate) && isCorrectFormat(finDate)) {
+            dateArr1 = iniDate.split("/");
+            dateArr2 = finDate.split("/");
+        } else {
+            return "Please enter a date with a valid format";
+        }
+
+        if (iniDate == "" || finDate == "") {
+            return "Please enter a date";
+        }
+
+        if (iniDate == finDate) {
+            return "Please enter different dates";
+        }
+
+        int validDate = isValidDate(
+                Integer.parseInt(dateArr1[0]),
+                Integer.parseInt(dateArr1[1]),
+                Integer.parseInt(dateArr1[2])
+        );
+
+        int validDate2 = isValidDate(
+                Integer.parseInt(dateArr2[0]),
+                Integer.parseInt(dateArr2[1]),
+                Integer.parseInt(dateArr2[2])
+        );
+
+        if (validDate == INVALID_DAY || validDate2 == INVALID_DAY) {
+            return "Please enter a valid day";
+        } else if (validDate == INVALID_MONTH || validDate2 == INVALID_MONTH) {
+            return "Please enter a valid month";
+        } else if (validDate == INVALID_YEAR || validDate2 == INVALID_YEAR) {
+            return "Please enter a valid month";
+        } else {
+            date1 = LocalDate.of(
+                    Integer.parseInt(dateArr1[2]),
+                    Integer.parseInt(dateArr1[1]),
+                    Integer.parseInt(dateArr1[0]));
+
+            date2 = LocalDate.of(
+                    Integer.parseInt(dateArr2[2]),
+                    Integer.parseInt(dateArr2[1]),
+                    Integer.parseInt(dateArr2[0]));
+
+        }
+
+        if (Period.between(date1, date2).isNegative()) {
+            return "Please enter a previous date then the other";
+        }
+
+        try {
+            return Period.between(date1, date2).getYears() + " years, "
+                    + Period.between(date1, date2).getMonths()
+                    + " months and "
+                    + Period.between(date1, date2).getDays() + " days";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+
     }
 
 }

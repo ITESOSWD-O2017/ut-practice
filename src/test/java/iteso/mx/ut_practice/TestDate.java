@@ -67,6 +67,32 @@ public class TestDate {
         );
     }
 
+    @Test
+    public void wrongDates(){
+        dateCalculator.ageCalculator("15/10/2000","18/12/1999");
+        Assert.assertEquals(
+                dateCalculator.ageCalculator("","22/12/2025"),
+                "Please enter a future date than the first one"
+        );
+    }
+
+    @Test
+    public void dateExample(){
+        dateCalculator.ageCalculator("24/05/1990","28/10/2017");
+        Assert.assertEquals(
+                dateCalculator.ageCalculator("28/05/1994","28/05/1994"),
+                "27 years, 5 months and 4 days"
+        );
+    }
+
+    @Test
+    public void emptyDate(){
+        dateCalculator.ageCalculator("","");
+        Assert.assertEquals(
+                dateCalculator.ageCalculator("","22/12/2025"),
+                "Pleas enter a date"
+        );
+    }
 
 
 }
