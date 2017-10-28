@@ -6,15 +6,15 @@ import java.time.Period;
 
 /** Date. */
 class Date {
-    /** Int valid. */
+    /** Valid. */
     private static final int VALID          = 0;
-    /** Int invalid day. */
+    /** Invalid day. */
     private static final int INVALID_DAY    = 1;
-    /** Int invalid month. */
+    /** Invalid month. */
     private static final int INVALID_MONTH  = 2;
-    /** Int invalid year. */
+    /** Invalid year. */
     private static final int INVALID_YEAR   = 3;
-    /** String date. */
+    /** Date. */
     private String date;
 
     /** Constructor. */
@@ -24,6 +24,7 @@ class Date {
     Date(final String myDate) {
         setDate(myDate);
     }
+
     /** @param myDate myDate. */
     public void setDate(final String myDate) {
         this.date = myDate;
@@ -84,6 +85,7 @@ class Date {
         String datePattern = "\\d{2}\\/\\d{2}\\/\\d{4}";
         return myDate.matches(datePattern);
     }
+
     /** @param day day
      * @param month month
      * @param year year
@@ -106,4 +108,67 @@ class Date {
         return VALID;
     }
 
+    /**
+     * @param birthday birthday
+     * @param futureDay another day of the future
+     * @return result
+    */
+    protected String ageCalculation(
+            final String birthday, final String futureDay) {
+        String[] birthdayDateArray;
+        String[] futureDateArray;
+        LocalDate birth;
+        LocalDate future;
+
+        if (isCorrectFormat(birthday) && isCorrectFormat(futureDay)) {
+            birthdayDateArray = birthday.split("/");
+            futureDateArray = futureDay.split("/");
+        } else {
+            return "Please enter a date with a valid format";
+        }
+
+        int birthdayValidDate = isValidDate(
+                Integer.parseInt(birthdayDateArray[0]),
+                Integer.parseInt(birthdayDateArray[1]),
+                Integer.parseInt(birthdayDateArray[2])
+        );
+        int futureValidDate = isValidDate(
+                Integer.parseInt(futureDateArray[0]),
+                Integer.parseInt(futureDateArray[1]),
+                Integer.parseInt(futureDateArray[2])
+        );
+
+        if ((birthdayValidDate == INVALID_DAY)
+                || (futureValidDate == INVALID_DAY)) {
+            return "Please enter a valid day";
+        } else if ((birthdayValidDate == INVALID_MONTH)
+                || (futureValidDate == INVALID_MONTH)) {
+            return "Please enter a valid month";
+        } else if ((birthdayValidDate == INVALID_YEAR)
+                || (futureValidDate == INVALID_YEAR)) {
+            return "Please enter a valid year";
+        } else {
+            birth = LocalDate.of(
+                    Integer.parseInt(birthdayDateArray[2]),
+                    Integer.parseInt(birthdayDateArray[1]),
+                    Integer.parseInt(birthdayDateArray[0]));
+            future = LocalDate.of(
+                    Integer.parseInt(futureDateArray[2]),
+                    Integer.parseInt(futureDateArray[1]),
+                    Integer.parseInt(futureDateArray[0]));
+        }
+
+        if (Period.between(birth, future).isNegative()) {
+            return "Please enter a past date";
+        }
+
+        try {
+            return Period.between(birth, future).getYears()
+                    + " years, " + Period.between(birth, future).getMonths()
+                    + " months and " + Period.between(birth, future).getDays()
+                    + " days";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
 }
