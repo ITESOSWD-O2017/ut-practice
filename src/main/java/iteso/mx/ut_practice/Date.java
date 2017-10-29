@@ -45,6 +45,7 @@ class Date {
      * @param date1 fecha1
      */
     Date(final String date1) {
+
         setDate(date);
     }
 
@@ -156,6 +157,81 @@ class Date {
             }
         }
         return VALID;
+    }
+
+    /**
+     *
+     *
+     * @param firstDate firstDate
+     * @param secondDate firstDate
+     * @return ret
+     */
+    protected String ageCalc(final String firstDate, final String secondDate) {
+        LocalDate date1;
+        LocalDate date2;
+        String[] dateArr1;
+        String[] dateArr2;
+
+
+        if (isCorrectFormat(firstDate) && isCorrectFormat(secondDate)) {
+            dateArr1 = firstDate.split("/");
+            dateArr2 = secondDate.split("/");
+        } else {
+            return "Please enter a date with a correct format";
+        }
+
+        if (firstDate == "" || secondDate == "") {
+            return "Date is empty, please enter a valid date";
+        }
+
+        if (firstDate == secondDate) {
+            return "Dates are the same, please enter different dates";
+        }
+
+        int validDate = isValidDate(
+                Integer.parseInt(dateArr1[0]),
+                Integer.parseInt(dateArr1[1]),
+                Integer.parseInt(dateArr1[2])
+        );
+
+        int validDate2 = isValidDate(
+                Integer.parseInt(dateArr2[0]),
+                Integer.parseInt(dateArr2[1]),
+                Integer.parseInt(dateArr2[2])
+        );
+
+        if (validDate == INVALID_DAY || validDate2 == INVALID_DAY) {
+            return "Please enter a valid day";
+        } else if (validDate == INVALID_MONTH || validDate2 == INVALID_MONTH) {
+            return "Please enter a valid month";
+        } else if (validDate == INVALID_YEAR || validDate2 == INVALID_YEAR) {
+            return "Please enter a valid month";
+        } else {
+            date1 = LocalDate.of(
+                    Integer.parseInt(dateArr1[2]),
+                    Integer.parseInt(dateArr1[1]),
+                    Integer.parseInt(dateArr1[0]));
+
+            date2 = LocalDate.of(
+                    Integer.parseInt(dateArr2[2]),
+                    Integer.parseInt(dateArr2[1]),
+                    Integer.parseInt(dateArr2[0]));
+
+        }
+
+        if (Period.between(date1, date2).isNegative()) {
+            return "Dates are incorrect, please enter valid dates";
+        }
+
+        try {
+            return Period.between(date1, date2).getYears() + " years, "
+                    + Period.between(date1, date2).getMonths()
+                    + " months and "
+                    + Period.between(date1, date2).getDays() + " days";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+
     }
 
 

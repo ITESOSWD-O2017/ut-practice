@@ -67,6 +67,32 @@ public class TestDate {
         );
     }
 
+    @Test
+    public void emptyDate(){
+        dateCalculator.ageCalc("","");
+        Assert.assertEquals(
+                dateCalculator.ageCalc("01/01/2000","10/07/2029"),
+                "Date is empty, please enter a valid date"
+        );
+    }
 
+    @Test
+    public void incorrectDate(){
+        dateCalculator.ageCalc("19/07/2017","19/07/1996");
+        Assert.assertEquals(
+                dateCalculator.ageCalc("","19/07/2017"),
+                "Please enter a valid date, one of the dates is incorrect or empty"
+        );
+    }
+
+    @Test
+    public void validAge(){
+        dateCalculator.ageCalc("19/07/1996","19/07/2017");
+        Assert.assertEquals(
+                dateCalculator.ageCalc("04/12/1964","04/12/1964"),
+                "21 years, 0 months and 0 days"
+        );
+    }
 
 }
+
